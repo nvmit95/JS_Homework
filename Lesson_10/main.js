@@ -28,14 +28,13 @@ Animal.prototype.feed = function () {
 
 function Cat() {
   Animal.apply(this, arguments);
-  this._animalFeed = Animal.prototype.feed;
 }
 
 Cat.prototype = Object.create(Animal.prototype);
 Cat.prototype.constructor = Cat;
 
 Cat.prototype.feed = function () {
-  this._animalFeed();
+  Animal.prototype.feed.apply(this, arguments);
   console.log('Кот доволен ^_^');
   return this;
 };
@@ -68,6 +67,33 @@ function deepClone(obj, target) {
   return copy;
 }
 
+var initialObj = {
+  string: 'Vasya',
+  number: 30,
+  boolean: true,
+  undefined: undefined,
+  null: null,
+  array: [1, 2, 3],
+  object: {
+    string2: 'Petrov',
+    object2: {
+      array2: [{}, {}],
+    },
+    object3: {},
+  },
+  method: function () {
+    alert('Hello');
+  },
+};
+
+var clonedObj = deepClone(initialObj);
+
+clonedObj.object.object2.array2[1].name = 'Vasya';
+clonedObj.array.push(2);
+
+console.log(initialObj);
+console.log(clonedObj);
+
 //Task №3
 
 function deepEqual(a, b) {
@@ -76,15 +102,22 @@ function deepEqual(a, b) {
   if (isObject) {
     for (var key in a) {
       if (!b.hasOwnProperty(key)) return false;
-      if (
-        typeof a[key] === 'object' &&
-        typeof b[key] === 'object' &&
-        Object.keys(a).length === Object.keys(b).length
-      ) {
+
+      if (Object.keys(a).length !== Object.keys(b).length) return false;
+
+      if (typeof a[key] === 'object' && typeof b[key] === 'object') {
         var result = deepEqual(a[key], b[key]);
         if (!result) return false;
       } else {
-        if (a[key !== b[key]]) return false;
+        if (a[key] !== b[key]) {
+          if (typeof a[key] === 'function' && typeof b[key] === 'function') {
+            if (a[key].toString() !== b[key].toString()) {
+              return false;
+            }
+          } else {
+            return false;
+          }
+        }
       }
     }
 
@@ -94,43 +127,24 @@ function deepEqual(a, b) {
   }
 }
 
-// var initialObj = {
-//   string: 'Vasya',
-//   number: 30,
-//   boolean: true,
-//   undefined: undefined,
-//   null: null,
-//   array: [1, 2, 3],
-//   object: {
-//     string2: 'Petrov',
-//     object2: {
-//       array2: [{}, {}],
-//     },
-//     object3: {},
-//   },
-//   method: function () {
-//     alert('Hello');
-//   },
-// };
+var obj = {
+  string: 'Vasya',
+  number: 30,
+  boolean: true,
+  undefined: undefined,
+  null: null,
+  array: [1],
+  object: {
+    string2: 'Petrov',
+    object2: {
+      array2: [{}, {}],
+    },
+    object3: {},
+  },
+  method: function () {
+    alert('Hello');
+  },
+};
 
-// var initialObj2 = {
-//   string: 'Vasya',
-//   number: 30,
-//   boolean: true,
-//   undefined: undefined,
-//   null: null,
-//   array: [1, 2, 3],
-//   object: {
-//     string2: 'Petrov',
-//     object2: {
-//       array2: [{}, {}],
-//     },
-//     object3: {},
-//   },
-//   method: function () {
-//     alert('Hello');
-//   },
-// };
-
-// console.log(deepEqual(initialObj, initialObj2));
-// console.log(deepEqual({ a: 1, b: 2, c: 3}, {a: 1, b: 2}));
+console.log(deepEqual(initialObj, obj));
+console.log(deepEqual({ a: 1, b: 2 }, { a: 1, b: 2 }));
