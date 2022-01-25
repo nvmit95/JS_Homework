@@ -97,17 +97,25 @@ console.log(clonedObj);
 //Task №3
 
 function deepEqual(a, b) {
-  const isObject = typeof a === 'object' && typeof b === 'object';
+  var isObject = typeof a === 'object' && typeof b === 'object';
+
+  if (Object.keys(a).length !== Object.keys(b).length) return false;
 
   if (isObject) {
     for (var key in a) {
       if (!b.hasOwnProperty(key)) return false;
 
-      if (Object.keys(a).length !== Object.keys(b).length) return false;
-
       if (typeof a[key] === 'object' && typeof b[key] === 'object') {
-        var result = deepEqual(a[key], b[key]);
-        if (!result) return false;
+        if (
+          a[key] !== null &&
+          b[key] !== null &&
+          typeof a[key] !== 'function' &&
+          typeof b[key] !== 'function'
+        ) {
+          if (!deepEqual(a[key], b[key])) {
+            return false;
+          }
+        }
       } else {
         if (a[key] !== b[key]) {
           if (typeof a[key] === 'function' && typeof b[key] === 'function') {
@@ -133,11 +141,11 @@ var obj = {
   boolean: true,
   undefined: undefined,
   null: null,
-  array: [1],
+  array: [1, 2, 3],
   object: {
     string2: 'Petrov',
     object2: {
-      array2: [{}, {}],
+      array2: [{ sport: 'football' }, {}],
     },
     object3: {},
   },
