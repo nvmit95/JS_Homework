@@ -1,5 +1,7 @@
 //Task №1
+
 //variant №1
+
 var newArr = [-1, 0, 2, 34, -2];
 var filterNumbersArr = newArr.filter(function (number) {
   return number > 0;
@@ -8,6 +10,7 @@ var filterNumbersArr = newArr.filter(function (number) {
 console.log(filterNumbersArr);
 
 //variant №2 ES6
+
 function filterNumbersArr(numbers) {
   return numbers.filter((el) => el > 0);
 }
@@ -15,24 +18,22 @@ function filterNumbersArr(numbers) {
 // filterNumbersArr([-1, 0, 2, 34, -2]);
 
 //Task №2
+
 var newArr = [-1, 0, 2, 34, -2];
 
-var firstPositiveArr = newArr.filter(function (number) {
-  return number > 0;
-});
+function findNumber(arr) {
+  return arr.find(function (number) {
+    return number > 0;
+  });
+}
 
-console.log(firstPositiveArr);
+console.log(findNumber(newArr));
 
 //Task №3
 
 function isPalindrome(word) {
-  word = word.toLowerCase();
   var wordReverse = word.split('').reverse().join('');
-  if (word === wordReverse) {
-    return true;
-  } else {
-    return false;
-  }
+  return word.toLowerCase() === wordReverse.toLowerCase();
 }
 
 console.log(isPalindrome('шалаШ'));
@@ -43,7 +44,7 @@ console.log(isPalindrome('привет'));
 function areAnagrams(word1, word2) {
   word1 = word1.toLowerCase().split('').sort().join('');
   word2 = word2.toLowerCase().split('').sort().join('');
-  return word1 === word2 ? true : false;
+  return word1 === word2;
 }
 
 console.log(areAnagrams('кот', 'отк'));
