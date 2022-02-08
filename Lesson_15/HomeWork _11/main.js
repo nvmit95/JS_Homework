@@ -16,16 +16,30 @@ addButton.addEventListener('click', addRow);
 
 table.addEventListener('click', function (event) {
   var target = event.target;
-  if (target.tagName.toLowerCase() === 'td') {
-    if (target.children.length < 1) {
-      var input = document.createElement('input');
-      input.setAttribute('contenteditable', 'true');
-      input.value = target.innerHTML;
+
+  if (target.tagName === 'TD') {
+    var input = document.createElement('input');
+    if (!target.textContent) {
       target.appendChild(input);
       input.focus();
       input.onblur = function () {
-        input.style.border = 'none';
+        target.textContent = input.value;
+      };
+    } else {
+      input.value = target.textContent;
+      target.textContent = null;
+      target.appendChild(input);
+      input.focus();
+      input.onblur = function () {
+        target.textContent = input.value;
       };
     }
+  }
+});
+
+table.addEventListener('keydown', function (event) {
+  console.log(event);
+  if (event.code === 'Enter' || event.code === 'NumpadEnter') {
+    event.target.onblur();
   }
 });
