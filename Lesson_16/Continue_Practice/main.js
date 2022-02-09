@@ -39,10 +39,8 @@ secondParagraph.addEventListener('click', function (event) {
       target.attributes.href.value = '#';
       alert('Информация о ссылке сохранена!');
     } else {
-      console.log(event);
       var objValue = JSON.parse(localStorage.getItem(target.innerText));
       alert(objValue.path);
-      localStorage.clear();
     }
   }
 });
