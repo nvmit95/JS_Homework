@@ -6,7 +6,7 @@ var userContainer = document.getElementsByClassName('user-container')[0];
 function getUserList() {
   var xhr = new XMLHttpRequest();
 
-  xhr.open('GET', 'https://reqres1.in/api/users?page=2', true);
+  xhr.open('GET', 'https://reqres.in/api/users?page=2', true);
 
   xhr.send();
 
@@ -31,6 +31,12 @@ function getUserList() {
 function createError() {
   var isError = document.getElementsByClassName('error')[0];
   if (isError) return;
+
+  if (tabsContainer.children && userContainer.children) {
+    tabsContainer.innerHTML = '';
+    userContainer.innerHTML = '';
+    userContainer.style.background = '';
+  }
 
   var error = document.createElement('div');
   error.classList.add('error');
