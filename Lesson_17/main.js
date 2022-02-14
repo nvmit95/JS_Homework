@@ -19,7 +19,6 @@ function getUserList() {
   };
 
   xhr.onerror = function () {
-    console.error(this.status);
     createError();
   };
 
